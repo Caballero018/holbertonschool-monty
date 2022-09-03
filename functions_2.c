@@ -1,102 +1,130 @@
 #include "monty.h"
+
 /**
- * add - Function that adds the top two elements of the stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void add(stack_t **stack, unsigned int line_number)
+ * verif - verif
+ * @numero: number
+ * Return: always 0
+ */
+int verif(char *numero)
 {
-	stack_t *tmp = *stack;
+	int ojo = 0;
 
-	if (tmp == NULL || (*stack)->prev == NULL)
+	if (!numero)
+		return (1);
+
+	if (numero[ojo] == 45)
+		ojo++;
+	while (numero[ojo])
 	{
-		fprintf(stderr, "L%u: can't add, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
+		if (numero[ojo] < 48 || numero[ojo] > 57)
+			return (-1);
+		ojo++;
 	}
-
-	(tmp->prev)->n = tmp->n + (tmp->prev)->n;
-	pop(stack, line_number);
+	return (0);
 }
-/**
- * sub - Function that adds the top two elements of the stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void sub(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (*stack == NULL || (*stack)->prev == NULL)
-	{
-		fprintf(stderr, "L%u: can't sub, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	(tmp->prev)->n = (tmp->prev)->n - tmp->n;
-	pop(stack, line_number);
+/**
+ * nop - nop
+ * @stack: node head
+ * @num_linea: number of the line
+ * Return: nothing
+ */
+void nop(stack_t **stack, unsigned int num_linea)
+{
+	if (*stack)
+	{};
+	if (num_linea)
+	{};
 }
-/**
- * mul - Function that adds the top two elements of the stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void mul(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (*stack == NULL || (*stack)->prev == NULL)
+/**
+ * sub - sub
+ * @stack: node head
+ * @num_linea: number of the line
+ * Return: nothing
+ */
+void sub(stack_t **stack, unsigned int num_linea)
+{
+	stack_t *ojo;
+	stack_t *ojo2;
+	int resta = 0;
+
+	if (*stack && (*stack)->next)
 	{
-		fprintf(stderr, "L%u: can't mul, stack too short\n", line_number);
+		ojo2 = (*stack)->next;
+		resta = ojo2->n - (*stack)->n;
+		ojo = *stack;
+		*stack = (*stack)->next;
+		if (*stack)
+			(*stack)->prev = NULL;
+		free(ojo);
+		(*stack)->n = resta;
+	}
+	else
+	{
+		dprintf(2, "L%u: can't sub, stack too short\n", num_linea);
+		free(hola.linea);
+		fclose(hola.fil);
+		free_l(stack);
 		exit(EXIT_FAILURE);
 	}
-	(tmp->prev)->n = (tmp->prev)->n * tmp->n;
-	pop(stack, line_number);
 }
-/**
- * div_ - Function that adds the top two elements of the stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void div_(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (*stack == NULL || (*stack)->prev == NULL)
+/**
+ * divi - divi
+ * @stack: node head
+ * @num_linea: number of the line
+ * Return: nothing
+ */
+void divi(stack_t **stack, unsigned int num_linea)
+{
+	stack_t *ojo;
+	stack_t *ojo2;
+	int div = 0;
+
+	if (*stack && (*stack)->next)
 	{
-		fprintf(stderr, "L%u: can't div, stack too short\n", line_number);
+		if ((*stack)->n == 0)
+		{
+			dprintf(2, "L%u: division by zero\n", num_linea);
+			free(hola.linea);
+			fclose(hola.fil);
+			free_l(stack);
+			exit(EXIT_FAILURE);
+		}
+		ojo2 = (*stack)->next;
+		div = ojo2->n / (*stack)->n;
+		ojo = *stack;
+		*stack = (*stack)->next;
+		if (*stack)
+			(*stack)->prev = NULL;
+		free(ojo);
+		(*stack)->n = div;
+	}
+	else
+	{
+		dprintf(2, "L%u: can't div, stack too short\n", num_linea);
+		free(hola.linea);
+		fclose(hola.fil);
+		free_l(stack);
 		exit(EXIT_FAILURE);
 	}
-	if (tmp->n == 0)
-	{
-		fprintf(stderr, "L%u: division by zero\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	tmp->prev->n = tmp->prev->n / tmp->n;
-	pop(stack, line_number);
 }
-/**
- * mod - Function that adds the top two elements of the stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void mod(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (*stack == NULL || (*stack)->prev == NULL)
+
+/**
+ * free_l - free
+ * @stack: node head
+ * Return: nothing
+ */
+void free_l(stack_t **stack)
+{
+	stack_t *cleaner = *stack;
+
+	while (*stack)
 	{
-		fprintf(stderr, "L%u: can't mod, stack too short\n", line_number);
-		exit(EXIT_FAILURE);
+		cleaner = cleaner->next;
+		free(*stack);
+		*stack = cleaner;
 	}
-	if (tmp->n == 0)
-	{
-		fprintf(stderr, "L%u: division by zero\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	tmp->prev->n = tmp->prev->n % tmp->n;
-	pop(stack, line_number);
 }

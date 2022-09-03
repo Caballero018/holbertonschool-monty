@@ -1,117 +1,161 @@
 #include "monty.h"
+
 /**
- * push -function that adds a new node at the end of stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void push(stack_t **stack, unsigned int line_number)
+ * swap - swap function
+ * @stack: head node
+ * @num_linea: number of line
+ * Return: Void function
+ */
+void swap(stack_t **stack, unsigned int num_linea)
 {
-	stack_t *new;
+	stack_t *ojo;
 
-	new = (stack_t *)malloc(sizeof(stack_t));
-	if (new == NULL)
+	if (*stack && (*stack)->next)
 	{
-		free(new);
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-
-	new->n = number;
-	new->next = NULL;
-	new->prev = NULL;
-	if (*stack == NULL)
-	{
-		*stack = new;
+		ojo = (*stack)->next;
+		if (ojo == NULL)
+		{
+			exit(0);
+		}
+		(*stack)->next = ojo->next;
+		(*stack)->prev = ojo;
+		ojo->next = *stack;
+		ojo->prev = NULL;
+		*stack = ojo;
 	}
 	else
 	{
-		(*stack)->next = new;
-		new->prev = *stack;
-		*stack = new;
+		dprintf(2, "L%u: can't swap, stack too short\n", num_linea);
+		free(hola.linea);
+		fclose(hola.fil);
+		free_l(stack);
+		exit(EXIT_FAILURE);
 	}
-	(void)line_number;
 }
+
 /**
- * pall - Function that print the elements of a stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void pall(stack_t **stack, unsigned int line_number)
+ * add - add function
+ * @stack: head
+ * @num_linea: number of line
+ * Return: void function
+ */
+void add(stack_t **stack, unsigned int num_linea)
 {
-	stack_t *tmp = *stack;
+	stack_t *ojo;
+	stack_t *ojo2;
+	int suma = 0;
 
-	(void)line_number;
-
-	while (tmp != NULL)
+	if (*stack && (*stack)->next)
 	{
-		fprintf(stdout, "%d\n", tmp->n);
-		tmp = tmp->prev;
+		ojo2 = (*stack)->next;
+		suma = (*stack)->n + ojo2->n;
+		ojo = *stack;
+		*stack = (*stack)->next;
+		if (*stack)
+			(*stack)->prev = NULL;
+		free(ojo);
+		(*stack)->n = suma;
 	}
-}
-/**
- * pint -  prints the value at the top of the stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-
-void pint(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
-
-	(void)line_number;
-	if (tmp != NULL)
-		printf("%d\n", tmp->n);
 	else
 	{
-		fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
+		dprintf(2, "L%d: can't add, stack too short\n", num_linea);
+		free(hola.linea);
+		fclose(hola.fil);
+		free_l(stack);
 		exit(EXIT_FAILURE);
 	}
 }
-/**
- * pop - Function that delete the value at top of stack
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void pop(stack_t **stack, unsigned int line_number)
-{
-	stack_t *tmp = *stack;
 
-	if (*stack == NULL)
+
+/**
+ * pint - pint function
+ * @stack: head
+ * @num_linea: num linea
+ * Return: void function
+ */
+void pint(stack_t **stack, unsigned int num_linea)
+{
+	stack_t *ojo;
+
+	ojo = *stack;
+	if (ojo == NULL)
 	{
-		fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
+		free(hola.linea);
+		fclose(hola.fil);
+		free_l(stack);
+		dprintf(2, "L%u: can't pint, stack empty\n", num_linea);
 		exit(EXIT_FAILURE);
 	}
-
-	*stack = (*stack)->prev;
-
-	if ((*stack) != NULL)
-		(*stack)->next = NULL;
-
-	free(tmp);
-
-	(void)line_number;
+	printf("%d\n", ojo->n);
 }
-/**
- * swap - Function that swaps the top two elements of the stack.
- * @stack: element at the top of the stack.
- * @line_number: number of line in file .m
- * Return: void
- **/
-void swap(stack_t **stack, unsigned int line_number)
-{
-	int i;
 
-	if (*stack == NULL || (*stack)->prev == NULL)
+
+/**
+ * pall - pall function
+ * @stack: head
+ * @num_linea: num linea
+ * Return: void function
+ */
+void pall(stack_t **stack, unsigned int num_linea)
+{
+	stack_t *ojo;
+
+	ojo = *stack;
+	if (num_linea)
+		while (ojo)
+		{
+			printf("%d\n", ojo->n);
+			ojo = ojo->next;
+		}
+}
+
+
+/**
+ * push - push function
+ * @stack: head
+ * @num_linea: number of line
+ * Return: Always 0 (Success)
+ */
+void push(stack_t **stack, unsigned int num_linea)
+{
+	stack_t *ojo;
+
+	ver2(stack, num_linea);
+	if (hola.token)
 	{
-		fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
+		ojo = malloc(sizeof(stack_t));
+		if (ojo == NULL)
+		{
+			fputs("Error: malloc failed\n", stderr);
+			exit(EXIT_FAILURE);
+		}
+		ojo->n = hola.numero, ojo->next = NULL;
+		ojo->prev = NULL;
+		if (*stack)
+		{
+			if (hola.flag == 1)
+			{
+				ojo->next = *stack;
+				(*stack)->prev = ojo;
+				*stack = ojo;
+			}
+			else
+			{
+				while ((*stack)->next)
+					*stack = (*stack)->next;
+				(*stack)->next = ojo, ojo->prev = *stack;
+				while ((*stack)->prev)
+					*stack = (*stack)->prev;
+			}
+		}
+		else
+			*stack = ojo;
+	}
+	else
+	{
+		free(hola.linea), fclose(hola.fil);
+		dprintf(2, "L%u: usage: push integer\n", num_linea);
+		free_l(stack);
 		exit(EXIT_FAILURE);
 	}
-	i = (*stack)->n;
-	(*stack)->n = (*stack)->prev->n;
-	(*stack)->prev->n = i;
-	(void)line_number;
 }

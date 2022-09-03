@@ -1,10 +1,25 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef STACK
+#define STACK
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-int number;
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+typedef struct globales
+{
+	int numero;
+	int flag;
+	char *linea;
+	char *token;
+	char *opco;
+	FILE *fil;
+} g_t;
+
+extern g_t hola;
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -12,7 +27,7 @@ int number;
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct stack_s
 {
@@ -27,7 +42,7 @@ typedef struct stack_s
  * @f: function to handle the opcode
  *
  * Description: opcode and its function
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct instruction_s
 {
@@ -35,38 +50,30 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-int main(int argc, char **argv);
-void execution(char **argv);
-char **tk_cm(char *comand, char *delim);
-int count_word(char *strn);
-int is_number(char *token);
-void (*search_function(char *stt, unsigned int line_number))();
-void push(stack_t **stack, unsigned int line_number);
-void pall(stack_t **stack, unsigned int line_number);
-void pint(stack_t **stack, unsigned int line_number);
-void pop(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number);
-void add(stack_t **stack, unsigned int line_number);
-void sub(stack_t **stack, unsigned int line_number);
-void div_(stack_t **stack, unsigned int line_number);
-void mul(stack_t **stack, unsigned int line_number);
-void mod(stack_t **stack, unsigned int line_number);
-void nop(stack_t **stack, unsigned int line_number);
-void free_stack(stack_t **stack);
-
-static const instruction_t functions[] = {
-	{"push", push},
-	{"pall", pall},
-	{"pint", pint},
-	{"pop", pop},
-	{"swap", swap},
-	{"add", add},
-	{"sub", sub},
-	{"div", div_},
-	{"mul", mul},
-	{"mod", mod},
-	{"nop", nop},
-	{NULL, NULL}
-	};
+void _mod(stack_t **stack, unsigned int num_linea);
+void pchar(stack_t **stack, unsigned int num_linea);
+void rotr(stack_t **stack, unsigned int num_linea);
+void rotl(stack_t **stack, unsigned int num_linea);
+void stack(stack_t **stack, unsigned int num_linea);
+void queue(stack_t **stack, unsigned int num_linea);
+void pstr(stack_t **stack, unsigned int num_linea);
+void _mul(stack_t **stack, unsigned int num_linea);
+void ver2(stack_t **stack, unsigned int x);
+void err(stack_t **stack, unsigned int x);
+void free_l(stack_t **stack);
+void divi(stack_t **stack, unsigned int num_linea);
+void sub(stack_t **stack, unsigned int num_linea);
+void nop(stack_t **stack, unsigned int num_linea);
+int verif(char *numero);
+int tamanio(char *linea);
+char quitarsalto(char *linea);
+void swap(stack_t **stack, __attribute__((unused)) unsigned int num_linea);
+void add(stack_t **stack, __attribute__((unused)) unsigned int num_linea);
+void pint(stack_t **stack, unsigned int num_linea);
+void pop(stack_t **stack, unsigned int num_linea);
+void (*func(char *tokens))(stack_t **stack, unsigned int num_linea);
+int main(__attribute__((unused)) int argc, char **argv);
+void pall(stack_t **stack, unsigned int num_linea);
+void push(stack_t **stack, unsigned int num_linea);
 
 #endif
