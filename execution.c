@@ -1,4 +1,4 @@
-#include "main.h"
+#include "monty.h"
 /**
  * free_stack -  frees a dlistint_t list.
  * @stack: pointer to a pointer to the head of a list.
