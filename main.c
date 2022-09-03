@@ -1,5 +1,4 @@
 #include "monty.h"
-g_t hola;
 
 /**
  * main - main function
@@ -9,6 +8,7 @@ g_t hola;
  */
 int main(int argc, char **argv)
 {
+	g_t hola;
 	stack_t *stack = NULL;
 	size_t numbytes = 0;
 	int bytesleidos = 0;
