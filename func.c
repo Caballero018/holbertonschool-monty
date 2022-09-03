@@ -39,7 +39,6 @@ char quitarsalto(char *linea)
 void pop(stack_t **stack, unsigned int num_linea)
 {
 	stack_t *ojo;
-	g_t hola;
 
 	ojo = *stack;
 	if (ojo == NULL)
